@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "Ver Usuario";
+}
+
+<div class="row">
+    <div class="col">
+        <h1>@ViewData["Title"]</h1>
+    </div>
+
+    <form action="" id="dataFilters">
+
+        <!-- Primera fila del filtro -->
+        <div class="row">
+            <div class="col">
+                <label for="Names">nombres:</label>
+                <input name="Names" data-validation="filtrar" class="form-control" type="text" required value="@Model.Item.Names" disabled>
+            </div>
+            <div class="col">
+                <label for="LastName">apellidos:</label>
+                <input name="LastName" data-validation="filtrar" class="form-control" type="text" value="@Model.Item.LastName" disabled>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="Id">identificacion:</label>
+                <input name="Id" data-validation="filtrar" class="form-control" type="number" required value="@Model.Item.Id" disabled>
+            </div>
+            <div class="col">
+                <label for="UserName">UserName:</label>
+                <input name="UserName" data-validation="filtrar" class="form-control" type="text" required value="@Model.Item.UserName" disabled>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="Email">Correo:</label>
+                <input name="Email" data-validation="filtrar" class="form-control" type="text" required value="@Model.Item.Email" disabled>
+            </div>
+        </div>
+
+        <br />
+
+        <a href="@Url.Action("EditUser", "Account", new { identificacion = Model.Item.Id} )" class="btn btn-success">Editar</a>
+        <a href="@Url.Action("DeleteUser", "Account", new { identificacion = Model.Item.Id} )" class="btn btn-danger">Eliminar</a>
+        <a href="@Url.Action("ListUsers", "Account")" class="btn btn-secondary">Listado</a>
+    </form>
+
+</div>

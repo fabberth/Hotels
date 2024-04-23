@@ -1,0 +1,85 @@
+﻿@using Hotels.Utilities
+@{
+    ViewData["Title"] = "Editar Hotel";
+}
+
+<script type="text/javascript">
+
+    window.addEventListener('load', function () {
+
+        $('form').submit(function (event) {
+            event.preventDefault();
+
+            var boton = $(event.target).find("button[type=submit]");
+            boton.prop("disabled", true);
+
+            var formData = $(this).serializeArray();
+            var jsonResultado = {};
+            $.each(formData, function (index, item) {
+                jsonResultado[item.name] = item.value;
+            });
+
+            $.ajax({
+                url: '@Url.Action("Update", "Hotels")',
+                method: 'POST',
+                data: { "Item": jsonResultado },
+                success: function (response) {
+
+                    if (response.isSuccess) {
+                        if (response.data && response.data.uri) {
+                            window.location.href = response.data.uri;
+                        }
+                        AppShowAlert(TypeAlert.success, `${response.msg}`, 600);
+                    }
+                    else {
+                        AppShowAlert(TypeAlert.danger, `${response.msg}`, 600);
+                    }
+                },
+                error: function (error) {
+
+                    AppShowAlert(TypeAlert.danger, `Ocurrió un error ;(`, 600);
+                    console.error(error);
+                }, complete: function () {
+                    boton.prop("disabled", false);
+                }
+            });
+
+        })
+
+    });
+
+</script>
+
+<div class="row">
+    <div class="col">
+        <h1>@ViewData["Title"]</h1>
+    </div>
+
+    <form action="" id="">
+
+        <div class="row">
+            <input name="Code" data-validation="filtrar" class="form-control" type="text" required value="@Model.Item.IdHotel" hidden>
+            <div class="col">
+                <label for="Code">Codigo:</label>
+                <input name="Code" data-validation="filtrar" class="form-control" type="text" required value="@Model.Item.Code">
+            </div>
+            <div class="col">
+                <label for="Name">Nombre:</label>
+                <input name="Name" data-validation="filtrar" class="form-control" type="text" required value="@Model.Item.Name">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                @HtmlUtils.GetCheckboxInput("IsEnabled", "Habilitado?", Model.Item.IsEnabled)
+            </div>
+        </div>
+
+        <br />
+
+        <button type="submit" class="btn btn-success">Guardar</button>
+        <a href="@Url.Action("Delete", "Hotels", new { code = Model.Item.code} )" class="btn btn-danger">Eliminar</a>
+        <a href="@Url.Action("List", "Hotels")" class="btn btn-secondary">Listado</a>
+    </form>
+
+</div>

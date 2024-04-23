@@ -1,0 +1,94 @@
+﻿@{
+    ViewData["Title"] = "Listado de Hoteles";
+}
+
+<script type="text/javascript">
+
+    window.addEventListener('load', function () {
+
+        /* LISTADO */
+        var columnsData = [
+            { "data": "Code", "name": "Code", title: " " },
+            { "data": "Code", "name": "Code", title: "Codigo" },
+            { "data": "Name", "name": "Name", title: "Nombre" },
+            { "data": "IsEnabled", "name": "IsEnabled", title: "Habilitado" }
+        ];
+
+        var rowCallbackData = function (row, data) {
+
+            $('td:eq(0)', row).html(
+
+                `<a class="tooltip-container text-decoration-none" href="#" onclick="AppConfirm('@Url.Action("Delete", "Hotels")?code=${data.Code}')">
+                    <span class="tooltip-text">Eliminar</span>
+                    <i class="material-icons">&#xe872;</i>
+                </a>
+
+                 <a class="tooltip-container text-decoration-none" href="@Url.Action("Edit", "Hotels")?code=${data.Code}">
+                    <span class="tooltip-text">Editar</span>
+                    <i class="material-icons">&#xe8b8;</i>
+                </a>
+                
+                `
+            );
+
+            $('td:eq(1)', row).html(
+                `<a class="tooltip-container text-decoration-none" href="@Url.Action("Show", "Hotels")?code=${data.Code}">
+                        <span class="tooltip-text">Ver usuario</span>
+                        ${data.Code}
+                </a>`
+            );
+        };
+
+        var order = [[1, 'desc']];
+
+        const pageSize = [10, 50, 100, -1];
+
+        var table = GenerateDataTable('@Url.Action("GetElements", "Hotels")', 'table-Content', 'dataFilters', columnsData, rowCallbackData, order, pageSize);
+
+        /* FIN LISTADO */
+
+        $('#dataFilters').submit(function (event) {
+            event.preventDefault();
+            $("#btn_Search_Dt").click();
+        });
+
+    });
+
+</script>
+
+
+
+<div class="row">
+    <div class="col">
+        <h1>@ViewData["Title"]</h1>
+    </div>
+
+    <form action="" id="dataFilters">
+
+        <div class="row">
+            <div class="col">
+                <label for="Code">Codigo:</label>
+                <input name="Code" data-validation="filtrar" class="form-control" type="text">
+            </div>
+            <div class="col">
+                <label for="Name">Nombre:</label>
+                <input name="Name" data-validation="filtrar" class="form-control" type="text">
+            </div>
+        </div>
+
+    </form>
+
+</div>
+
+<br />
+
+<table id="table-Content" class="table table-hover table-bordered">
+
+    <thead class="table-primary bg-dark text-white">
+    </thead>
+
+</table>
+
+<br />
+
+<a href="@Url.Action("New", "Hotels")" class="btn btn-secondary">Nuevo Hotel</a>

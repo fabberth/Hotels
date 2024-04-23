@@ -1,0 +1,101 @@
+﻿@{
+    ViewData["Title"] = "Editar Usuario";
+}
+
+<script type="text/javascript">
+
+    window.addEventListener('load', function () {
+
+        $('form').submit(function (event) {
+            event.preventDefault();
+
+            var boton = $(event.target).find("button[type=submit]");
+            boton.prop("disabled", true);
+
+            var formData = $(this).serializeArray();
+            var jsonResultado = {};
+            $.each(formData, function (index, item) {
+                jsonResultado[item.name] = item.value;
+            });
+
+            $.ajax({
+                url: '@Url.Action("UpdateUser", "Account")',
+                method: 'POST',
+                data: { "Item": jsonResultado },
+                success: function (response) {
+
+                    if (response.isSuccess) {
+                        if (response.data && response.data.uri) {
+                            window.location.href = response.data.uri;
+                        }
+                        AppShowAlert(TypeAlert.success, `${response.msg}`, 600);
+                    }
+                    else {
+                        AppShowAlert(TypeAlert.danger, `${response.msg}`, 600);
+                    }
+                },
+                error: function (error) {
+
+                    AppShowAlert(TypeAlert.danger, `Ocurrió un error ;(`, 600);
+                    console.error(error);
+                }, complete: function () {
+                    boton.prop("disabled", false);
+                }
+            });
+
+        })
+
+    });
+
+</script>
+
+<div class="row">
+    <div class="col">
+        <h1>@ViewData["Title"]</h1>
+    </div>
+
+    <form action="" id="dataFilters">
+
+        <!-- Primera fila del filtro -->
+        <div class="row">
+            <div class="col">
+                <label for="Names">nombres:</label>
+                <input name="Names" data-validation="filtrar" class="form-control" type="text" required value="@Model.Item.Names">
+            </div>
+            <div class="col">
+                <label for="LastName">apellidos:</label>
+                <input name="LastName" data-validation="filtrar" class="form-control" type="text" value="@Model.Item.LastName">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="ShowId">identificacion:</label>
+                <input name="ShowId" data-validation="filtrar" class="form-control" type="number" required value="@Model.Item.Id" disabled>
+                <input name="Id" data-validation="filtrar" class="form-control" type="number" required value="@Model.Item.Id" hidden>
+            </div>
+            <div class="col">
+                <label for="UserName">UserName:</label>
+                <input name="UserName" data-validation="filtrar" class="form-control" type="text" required value="@Model.Item.UserName">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="Password">Contraseña:</label>
+                <input name="Password" data-validation="filtrar" class="form-control" type="password" required value="@Model.Item.Password">
+            </div>
+            <div class="col">
+                <label for="Email">Correo:</label>
+                <input name="Email" data-validation="filtrar" class="form-control" type="text" required value="@Model.Item.Email">
+            </div>
+        </div>
+
+        <br />
+
+        <button type="submit" class="btn btn-success">Guardar</button>
+        <a href="@Url.Action("DeleteUser", "Account", new { identificacion = Model.Item.Id} )" class="btn btn-danger">Eliminar</a>
+        <a href="@Url.Action("ListUsers", "Account")" class="btn btn-secondary">Listado</a>
+    </form>
+
+</div>

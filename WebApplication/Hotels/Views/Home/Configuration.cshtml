@@ -1,0 +1,83 @@
+﻿@using Hotels.Utilities
+@{
+    ViewData["Title"] = "Configuraciones";
+}
+@model ConfigurationViewModel
+
+<script type="text/javascript">
+
+    window.addEventListener('load', function () {
+
+        $('form').submit(function (event) {
+            event.preventDefault();
+
+            var boton = $(event.target).find("button[type=submit]");
+            boton.prop("disabled", true);
+
+            var formData = $(this).serializeArray();
+            var jsonResultado = {};
+            $.each(formData, function (index, item) {
+                jsonResultado[item.name] = item.value;
+            });
+            
+            console.log(jsonResultado);
+            $.ajax({
+                url: '@Url.Action("SaveConfiguration", "Home", new { Area = "" })',
+                method: 'POST',
+                data: { "parameterItems": jsonResultado },
+                success: function (response) {
+
+                    if (response.isSuccess) {
+                        if (response.data && response.data.uri) {
+                            window.location.href = response.data.uri;
+                        }
+                        AppShowAlert(TypeAlert.success, `${response.msg}`, 600);
+                    }
+                    else {
+                        AppShowAlert(TypeAlert.danger, `${response.msg}`, 600);
+                    }
+                },
+                error: function (error) {
+
+                    AppShowAlert(TypeAlert.danger, `Ocurrió un error ;(`, 600);
+                    console.error(error);
+                }, complete: function () {
+                    boton.prop("disabled", false);
+                }
+            });
+
+        })
+
+    });
+
+</script>
+
+<div class="row">
+    <div class="col">
+        <h1>@ViewData["Title"]:</h1>
+    </div>
+
+    <form>
+
+        
+
+        <div class="row">
+
+            @{
+                foreach (var item in Model.Items)
+                {
+                                <div class="col-sm-4">
+                                    @HtmlUtils.GetInputConfiguration(item.Module, item.Name, item.Value, item.Type)
+                                </div>
+                }
+            }
+            
+        </div>
+
+        <br />
+
+        <button type="submit" class="btn btn-success">Guardar</button>
+
+    </form>
+
+</div>

@@ -1,0 +1,100 @@
+﻿@{
+    ViewData["Title"] = "Listado de Usuarios";
+}
+
+<script type="text/javascript">
+
+    window.addEventListener('load', function () {
+
+        /* LISTADO */
+        var columnsData = [
+            { "data": "Id", "name": "", title: " " },
+            { "data": "Id", "name": "Id", title: "identificacion" },
+            { "data": "Names", "name": "Names", title: "nombres" },
+            { "data": "UserName", "name": "UserName", title: "UserName" },
+            { "data": "Email", "name": "Email", title: "Correo" }
+        ];
+
+        var rowCallbackData = function (row, data) {
+
+            $('td:eq(0)', row).html(
+
+                `<a class="tooltip-container text-decoration-none" href="#" onclick="AppConfirm('@Url.Action("DeleteUser", "Account")?identificacion=${data.Id}')">
+                    <span class="tooltip-text">Eliminar</span>
+                    <i class="material-icons">&#xe872;</i>
+                </a>
+
+                        <a class="tooltip-container text-decoration-none" href="@Url.Action("EditUser", "Account")?identificacion=${data.Id}">
+                    <span class="tooltip-text">Editar</span>
+                    <i class="material-icons">&#xe8b8;</i>
+                </a>
+                
+                `
+            );
+
+            $('td:eq(1)', row).html(
+                `<a class="tooltip-container text-decoration-none" href="@Url.Action("ShowUser", "Account")?identificacion=${data.Id}">
+                        <span class="tooltip-text">Ver usuario</span>
+                        ${data.Id}
+                </a>`
+            );
+        };
+
+        var order = [[1, 'desc']];
+
+        const pageSize = [10, 50, 100, -1];
+
+        var table = GenerateDataTable('@Url.Action("GetUsers", "Account")', 'table-usuarios', 'dataFilters', columnsData, rowCallbackData, order, pageSize);
+
+        /* FIN LISTADO */
+
+        $('#dataFilters').submit(function (event) {
+            event.preventDefault();
+            $("#btn_Search_Dt").click();
+        });
+
+    });
+
+</script>
+
+
+
+<div class="row">
+    <div class="col">
+        <h1>Listado de Usuarios</h1>
+    </div>
+
+    <form action="" id="dataFilters">
+
+        <!-- Primera fila del filtro -->
+        <div class="row">
+            <div class="col">
+                <label for="identificacion">identificacion:</label>
+                <input name="identificacion" data-validation="filtrar" class="form-control" type="text">
+            </div>
+            <div class="col">
+                <label for="nombres">nombres:</label>
+                <input name="nombres" data-validation="filtrar" class="form-control" type="text">
+            </div>
+            <div class="col">
+                <label for="username">username:</label>
+                <input name="username" data-validation="filtrar" class="form-control" type="text">
+            </div>
+        </div>
+
+    </form>
+
+</div>
+
+<br />
+
+<table id="table-usuarios" class="table table-hover table-bordered">
+
+    <thead class="table-primary bg-dark text-white">
+    </thead>
+
+</table>
+
+<br />
+
+<a href="@Url.Action("NewUser", "Account")" class="btn btn-secondary">Nuevo Usuario</a>

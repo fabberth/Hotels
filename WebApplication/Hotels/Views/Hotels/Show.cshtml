@@ -1,0 +1,38 @@
+﻿@using Hotels.Utilities
+@{
+    ViewData["Title"] = "Ver Hotel";
+}
+
+<div class="row">
+    <div class="col">
+        <h1>@ViewData["Title"]</h1>
+    </div>
+
+    <div>
+
+        <div class="row">
+            <input name="Code" data-validation="filtrar" class="form-control" type="text" required value="@Model.Item.IdHotel" hidden>
+            <div class="col">
+                <label for="Code">Codigo:</label>
+                <input name="Code" data-validation="filtrar" class="form-control" type="text" required value="@Model.Item.Code" disabled>
+            </div>
+            <div class="col">
+                <label for="Name">Nombre:</label>
+                <input name="Name" data-validation="filtrar" class="form-control" type="text" required value="@Model.Item.Name" disabled>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                @HtmlUtils.GetCheckboxInput("IsEnabled", "Habilitado?", Model.Item.IsEnabled)
+            </div>
+        </div>
+
+        <br />
+
+        <a href="@Url.Action("Edit", "Hotels", new { code = Model.Item.Code} )" class="btn btn-success">Editar</a>
+        <a href="@Url.Action("Delete", "Hotels", new { code = Model.Item.Code} )" class="btn btn-danger">Eliminar</a>
+        <a href="@Url.Action("List", "Hotels")" class="btn btn-secondary">Listado</a>
+    </div>
+
+</div>
