@@ -58,7 +58,7 @@
     <form action="" id="">
 
         <div class="row">
-            <input name="Code" data-validation="filtrar" class="form-control" type="text" required value="@Model.Item.IdHotel" hidden>
+            <input name="IdHotel" data-validation="filtrar" class="form-control" type="text" required value="@Model.Item.IdHotel" hidden>
             <div class="col">
                 <label for="Code">Codigo:</label>
                 <input name="Code" data-validation="filtrar" class="form-control" type="text" required value="@Model.Item.Code">
@@ -78,7 +78,7 @@
         <br />
 
         <button type="submit" class="btn btn-success">Guardar</button>
-        <a href="@Url.Action("Delete", "Hotels", new { code = Model.Item.code} )" class="btn btn-danger">Eliminar</a>
+        <a href="@Url.Action("Delete", "Hotels", new { code = Model.Item.Code} )" class="btn btn-danger">Eliminar</a>
         <a href="@Url.Action("List", "Hotels")" class="btn btn-secondary">Listado</a>
     </form>
 

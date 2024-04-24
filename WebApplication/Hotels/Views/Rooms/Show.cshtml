@@ -1,0 +1,75 @@
+﻿@using Hotels.Utilities
+@{
+    ViewData["Title"] = "Ver Habitacion";
+}
+@model RoomViewModel;
+
+<div class="row">
+    <div class="col">
+        <h1>@ViewData["Title"]</h1>
+    </div>
+
+    <div>
+
+        <div class="row">
+            <div class="col">
+                <label for="Code">Codigo:</label>
+                <input name="Code" data-validation="filtrar" class="form-control" type="text" disabled value="@Model.Item.Code">
+            </div>
+            <div class="col">
+                <label for="Name">Nombre:</label>
+                <input name="Name" data-validation="filtrar" class="form-control" type="text" disabled value="@Model.Item.Name">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="Hotel">Hotel:</label>
+                <input name="Hotel" data-validation="filtrar" class="form-control" type="text" disabled value="@Model.Item.Hotel.Code">
+            </div>
+            <div class="col">
+                <label for="NumberOfPeople"># Personas:</label>
+                <input name="NumberOfPeople" data-validation="filtrar" class="form-control" type="number" disabled value="@Model.Item.NumberOfPeople">
+            </div>
+            <div class="col">
+                <label for="TypeOfRoom">Tipo Habitacion:</label>
+                <input name="TypeOfRoom" data-validation="filtrar" class="form-control" type="text" disabled value="@Model.Item.TypeOfRoom">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="BaseCost">Costo Base:</label>
+                <input name="BaseCost" data-validation="filtrar" class="form-control" type="number" disabled value="@Model.Item.BaseCost">
+            </div>
+            <div class="col">
+                <label for="ImposedCost">Impuesto:</label>
+                <input name="ImposedCost" data-validation="filtrar" class="form-control" type="number" disabled value="@Model.Item.ImposedCost">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="Location">Ubicacion:</label>
+                <input name="Location" data-validation="filtrar" class="form-control" type="text" disabled value="@Model.Item.Location">
+            </div>
+            <div class="col">
+                @HtmlUtils.GetCheckboxInput("IsEnabled", "Habilitado?", Model.Item.IsEnabled)
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="Observation">Observacion:</label>
+                <textarea name="Observation" class="form-control" disabled>@Model.Item.Observation</textarea>
+            </div>
+        </div>
+
+        <br />
+
+        <a href="@Url.Action("Edit", "Rooms", new { code = Model.Item.Code} )" class="btn btn-success">Editar</a>
+        <a href="@Url.Action("Delete", "Rooms", new { code = Model.Item.Code} )" class="btn btn-danger">Eliminar</a>
+        <a href="@Url.Action("List", "Rooms")" class="btn btn-secondary">Listado</a>
+    </div>
+
+</div>

@@ -27,5 +27,29 @@ namespace Hotels.Domain
         public string Observation { get; set; }
 
         public bool IsEnabled { get; set; }
+
+        public void ValidateRoom()
+        {
+            if (string.IsNullOrEmpty(this.Name))
+            {
+                throw new Exception($"Nombre no valido");
+            }
+
+            if (string.IsNullOrEmpty(this.Code))
+            {
+                throw new Exception($"Codigo no valido");
+            }
+
+            if (string.IsNullOrEmpty(this.TypeOfRoom))
+            {
+                throw new Exception($"Tipo de habitacion no valido");
+            }
+
+            if (string.IsNullOrEmpty(this.Location))
+            {
+                throw new Exception($"Ubicacion no valido");
+            }
+
+        }
     }
 }

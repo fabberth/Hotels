@@ -17,7 +17,9 @@ namespace Hotels.Models
         public void GetActionsBanner(IIdentity Identity)
         {
             List<AppAction> actions = new List<AppAction> {
-                        new AppAction(1, "Reservar", new AppUriAction("List", "Room"))
+                        new AppAction(1, "Reservar", new AppUriAction("Reservar", "Room")),
+                        new AppAction(2, "Hoteles", new AppUriAction("List", "Hotels")),
+                        new AppAction(3, "Habitaciones", new AppUriAction("List", "Rooms"))
             };
 
             if (this.AppActionsBanner == null)
@@ -35,8 +37,8 @@ namespace Hotels.Models
 
                 if (Claim != null)
                 {
-                    this.AppActionsBanner.Add(new AppAction(2, "Usuarios", new AppUriAction("ListUsers", "Account", new { area = "" })));
-                    this.AppActionsBanner.Add(new AppAction(3, "Configuracion", new AppUriAction("Configuration", "Home", new { area = "" })));
+                    this.AppActionsBanner.Add(new AppAction(9, "Usuarios", new AppUriAction("ListUsers", "Account", new { area = "" })));
+                    this.AppActionsBanner.Add(new AppAction(10, "Configuracion", new AppUriAction("Configuration", "Home", new { area = "" })));
                 }
             }
 

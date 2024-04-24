@@ -23,6 +23,7 @@ builder.Services.AddDbContext<AppDbContext>(
 
 builder.Services.AddScoped<IHotelRepository, HotelRepository>();
 
+builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 

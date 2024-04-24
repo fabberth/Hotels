@@ -70,7 +70,7 @@
                                         @User.Identity.Name
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="@Url.Action("ShowUser", "Home", new { identificacion = User.Identity.Name, area = "" })">Mi Perfil</a></li>
+                                        <li><a class="dropdown-item" href="@Url.Action("ShowUser", "Account", new { identificacion = User.Identity.Name, area = "" })">Mi Perfil</a></li>
                                         <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Cerrar sesión</a></li>
                                     </ul>
                                 </div>

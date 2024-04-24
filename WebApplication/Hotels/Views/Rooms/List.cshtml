@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Listado de Hoteles";
+    ViewData["Title"] = "Listado de Habitaciones";
 }
 
 <script type="text/javascript">
@@ -11,20 +11,21 @@
             { "data": "Code", "name": "Code", title: " " },
             { "data": "Code", "name": "Code", title: "Codigo" },
             { "data": "Name", "name": "Name", title: "Nombre" },
-            { "data": "IsEnabled", "name": "IsEnabled", title: "Habilitado" },
-            { "data": "Code", "name": "Code", title: "Habitaciones" },
+            { "data": "Location", "name": "Location", title: "Ubicacion" },
+            { "data": "Hotel", "name": "Hotel", title: "Hotel" },
+            { "data": "IsEnabled", "name": "IsEnabled", title: "Habilitado" }
         ];
 
         var rowCallbackData = function (row, data) {
 
             $('td:eq(0)', row).html(
 
-                `<a class="tooltip-container text-decoration-none" href="#" onclick="AppConfirm('@Url.Action("Delete", "Hotels")?code=${data.Code}')">
+                `<a class="tooltip-container text-decoration-none" href="#" onclick="AppConfirm('@Url.Action("Delete", "Rooms")?code=${data.Code}')">
                     <span class="tooltip-text">Eliminar</span>
                     <i class="material-icons">&#xe872;</i>
                 </a>
 
-                 <a class="tooltip-container text-decoration-none" href="@Url.Action("Edit", "Hotels")?code=${data.Code}">
+                <a class="tooltip-container text-decoration-none" href="@Url.Action("Edit", "Rooms")?code=${data.Code}">
                     <span class="tooltip-text">Editar</span>
                     <i class="material-icons">&#xe8b8;</i>
                 </a>
@@ -33,16 +34,9 @@
             );
 
             $('td:eq(1)', row).html(
-                `<a class="tooltip-container text-decoration-none" href="@Url.Action("Show", "Hotels")?code=${data.Code}">
+                `<a class="tooltip-container text-decoration-none" href="@Url.Action("Show", "Rooms")?code=${data.Code}">
                         <span class="tooltip-text">Ver</span>
                         ${data.Code}
-                </a>`
-            );
-
-            $('td:eq(4)', row).html(
-                `<a class="tooltip-container text-decoration-none" href="@Url.Action("New", "Rooms")?IdHotel=${data.Code}">
-                            <span class="tooltip-text">Crear Habitacion en el Hotel</span>
-                                Crear Habitacion
                 </a>`
             );
         };
@@ -51,7 +45,7 @@
 
         const pageSize = [10, 50, 100, -1];
 
-        var table = GenerateDataTable('@Url.Action("GetElements", "Hotels")', 'table-Content', 'dataFilters', columnsData, rowCallbackData, order, pageSize);
+        var table = GenerateDataTable('@Url.Action("GetElements", "Rooms")', 'table-Content', 'dataFilters', columnsData, rowCallbackData, order, pageSize);
 
         /* FIN LISTADO */
 
@@ -81,6 +75,16 @@
             <div class="col">
                 <label for="Name">Nombre:</label>
                 <input name="Name" data-validation="filtrar" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label for="Location">Ubicacion:</label>
+                <input name="Location" data-validation="filtrar" class="form-control" type="text">
+            </div>
+            <div class="col">
+                <label for="CodeHotel">Codigo Hotel:</label>
+                <input name="CodeHotel" data-validation="filtrar" class="form-control" type="text">
             </div>
         </div>
 

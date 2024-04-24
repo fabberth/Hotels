@@ -31,6 +31,8 @@ namespace Hotels.Services
 
         public Hotel Get(string Id)
         {
+            if(int.TryParse(Id, out int IdHotel))
+                return All().FirstOrDefault(x => x.IdHotel == IdHotel);
             return All().FirstOrDefault(x=> x.Code == Id);
         }
 

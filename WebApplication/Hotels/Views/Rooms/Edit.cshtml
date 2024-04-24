@@ -1,0 +1,122 @@
+﻿@using Hotels.Utilities
+@{
+    ViewData["Title"] = "Editar Hotel";
+}
+
+<script type="text/javascript">
+
+    window.addEventListener('load', function () {
+
+        $('form').submit(function (event) {
+            event.preventDefault();
+
+            var boton = $(event.target).find("button[type=submit]");
+            boton.prop("disabled", true);
+
+            var formData = $(this).serializeArray();
+            var jsonResultado = {};
+            $.each(formData, function (index, item) {
+                jsonResultado[item.name] = item.value;
+            });
+
+            $.ajax({
+                url: '@Url.Action("Update", "Rooms")',
+                method: 'POST',
+                data: { "Item": jsonResultado },
+                success: function (response) {
+
+                    if (response.isSuccess) {
+                        if (response.data && response.data.uri) {
+                            window.location.href = response.data.uri;
+                        }
+                        AppShowAlert(TypeAlert.success, `${response.msg}`, 600);
+                    }
+                    else {
+                        AppShowAlert(TypeAlert.danger, `${response.msg}`, 600);
+                    }
+                },
+                error: function (error) {
+
+                    AppShowAlert(TypeAlert.danger, `Ocurrió un error ;(`, 600);
+                    console.error(error);
+                }, complete: function () {
+                    boton.prop("disabled", false);
+                }
+            });
+
+        })
+
+    });
+
+</script>
+
+<div class="row">
+    <div class="col">
+        <h1>@ViewData["Title"]</h1>
+    </div>
+
+    <form action="" id="">
+        <input name="IdBD" data-validation="filtrar" class="form-control" type="text" hidden required value="@Model.Item.IdBD">
+        <div class="row">
+            <div class="col">
+                <label for="Code">Codigo:</label>
+                <input name="Code" data-validation="filtrar" class="form-control" type="text" value="@Model.Item.Code">
+            </div>
+            <div class="col">
+                <label for="Name">Nombre:</label>
+                <input name="Name" data-validation="filtrar" class="form-control" type="text" value="@Model.Item.Name">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="Hotel">Hotel:</label>
+                <input name="Hotel" data-validation="filtrar" class="form-control" type="text" disabled value="@Model.Item.Hotel.Code">
+                <input name="IdHotel" data-validation="filtrar" class="form-control" type="text" hidden required value="@Model.Item.Hotel.IdHotel">
+            </div>
+            <div class="col">
+                <label for="NumberOfPeople"># Personas:</label>
+                <input name="NumberOfPeople" data-validation="filtrar" class="form-control" type="number" value="@Model.Item.NumberOfPeople">
+            </div>
+            <div class="col">
+                <label for="TypeOfRoom">Tipo Habitacion:</label>
+                <input name="TypeOfRoom" data-validation="filtrar" class="form-control" type="text" value="@Model.Item.TypeOfRoom">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="BaseCost">Costo Base:</label>
+                <input name="BaseCost" data-validation="filtrar" class="form-control" type="number" value="@Model.Item.BaseCost">
+            </div>
+            <div class="col">
+                <label for="ImposedCost">Impuesto:</label>
+                <input name="ImposedCost" data-validation="filtrar" class="form-control" type="number" value="@Model.Item.ImposedCost">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="Location">Ubicacion:</label>
+                <input name="Location" data-validation="filtrar" class="form-control" type="text" value="@Model.Item.Location">
+            </div>
+            <div class="col">
+                @HtmlUtils.GetCheckboxInput("IsEnabled", "Habilitado?", Model.Item.IsEnabled)
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="Observation">Observacion:</label>
+                <textarea name="Observation" class="form-control">@Model.Item.Observation</textarea>
+            </div>
+        </div>
+
+        <br />
+
+        <button type="submit" class="btn btn-success">Guardar</button>
+        <a href="@Url.Action("Delete", "Rooms", new { code = Model.Item.Code} )" class="btn btn-danger">Eliminar</a>
+        <a href="@Url.Action("List", "Rooms")" class="btn btn-secondary">Listado</a>
+    </form>
+
+</div>
