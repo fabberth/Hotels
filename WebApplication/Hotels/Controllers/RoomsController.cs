@@ -45,6 +45,13 @@ namespace Hotels.Controllers
                 throw new Exception($"No se encontro Hotel, para asignar habitacion");
             }
 
+            if (!hotel.IsEnabled)
+            {
+                TempData[AppDictionary.MensajeDanger] = $"Hotel {hotel.Code} deshabilitado";
+
+                return RedirectToActionPreserveMethod("List");
+            }
+
             var model = new RoomViewModel();
             model.Hotel = hotel;
             model.GetActionsBanner(HttpContext.User.Identity);
@@ -69,6 +76,15 @@ namespace Hotels.Controllers
                 {
                     return Ok(new DataResponse(false, $"El Codigo {model.Item.Code} no esta disponible"));
                 }
+
+                var hotel = hotelRepository.Get(model.Item.IdHotel.ToString());
+
+                if (hotel == null)
+                {
+                    return Ok(new DataResponse(false, $"Hotel no encontrado {model.Item.IdHotel}"));
+                }
+
+                model.Item.Hotel = hotel;
 
             }
             catch (Exception e)

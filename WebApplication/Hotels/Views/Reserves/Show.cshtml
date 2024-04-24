@@ -1,0 +1,94 @@
+﻿@using Hotels.Utilities
+@{
+    ViewData["Title"] = "Ver Reserva";
+}
+@model ReserveViewModel;
+
+<div class="row">
+    <div class="col">
+        <h1>@ViewData["Title"]</h1>
+    </div>
+
+    <div>
+
+        <div class="row">
+            <div class="col">
+                <label for="Code">Codigo:</label>
+                <input name="Code" data-validation="filtrar" class="form-control" type="text" disabled value="@Model.Item.IdReserve">
+            </div>
+            <div class="col">
+                <label for="Room">Habitacion:</label>
+                <input name="Room" data-validation="filtrar" class="form-control" type="text" disabled value="@Model.Item.Room.Code">
+            </div>
+        </div>
+
+        <div class="row">
+            
+            <div class="col">
+                @HtmlUtils.GetDateTimeInput("DateOfAdmission", "Fecha de ingreso", Model.Item.DateOfAdmission, true)
+            </div>
+            <div class="col">
+                @HtmlUtils.GetDateTimeInput("DateOfExit", "Fecha de salida", Model.Item.DateOfExit, true)
+            </div>
+            <div class="col">
+                @HtmlUtils.GetDateTimeInput("DateOfCreation", "Fecha de creacion", Model.Item.DateOfCreation, true)
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="FullName">Nombre:</label>
+                <input name="FullName" data-validation="filtrar" class="form-control" type="text" disabled value="@Model.Item.FullName">
+            </div>
+            <div class="col">
+                <label for="DocumentType">Tipo documento:</label>
+                <input name="DocumentType" data-validation="filtrar" class="form-control" type="text" disabled value="@Model.Item.DocumentType">
+            </div>
+            <div class="col">
+                <label for="DocumentNumber"># documento:</label>
+                <input name="DocumentNumber" data-validation="filtrar" class="form-control" type="text" disabled value="@Model.Item.DocumentNumber">
+            </div>
+            <div class="col">
+                <label for="Gender">Genero:</label>
+                <input name="Gender" data-validation="filtrar" class="form-control" type="text" disabled value="@Model.Item.Gender">
+            </div>
+            <div class="col">
+                @HtmlUtils.GetDateTimeInput("Birthdate", "Fecha de nacimiento", Model.Item.Birthdate, true)
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="Email">Correo:</label>
+                <input name="Email" data-validation="filtrar" class="form-control" type="text" disabled value="@Model.Item.Email">
+            </div>
+            <div class="col">
+                <label for="Telephone">Telefono:</label>
+                <input name="Telephone" data-validation="filtrar" class="form-control" type="text" disabled value="@Model.Item.Telephone">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="EmergencyFullName">Nombre emergencia:</label>
+                <input name="EmergencyFullName" data-validation="filtrar" class="form-control" type="text" disabled value="@Model.Item.EmergencyFullName">
+            </div>
+            <div class="col">
+                <label for="EmergencyTelephone">Telefono emergencia:</label>
+                <input name="EmergencyTelephone" data-validation="filtrar" class="form-control" type="text" disabled value="@Model.Item.EmergencyTelephone">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="Observation">Observacion:</label>
+                <textarea name="Observation" class="form-control" disabled>@Model.Item.Observation</textarea>
+            </div>
+        </div>
+
+        <br />
+
+        <a href="@Url.Action("List", "Reserves")" class="btn btn-secondary">Listado</a>
+    </div>
+
+</div>

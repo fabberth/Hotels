@@ -21,9 +21,7 @@ namespace Hotels.Controllers
         [Authorize(Policy = "CookiePolicy")]
         public IActionResult Index()
         {
-            var model = new AppUserViewModel();
-            model.GetActionsBanner(HttpContext.User.Identity);
-            return View(model);
+            return RedirectToActionPreserveMethod("Booking", "Reserves");
         }
 
         #region Configuration

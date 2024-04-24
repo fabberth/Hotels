@@ -1,0 +1,155 @@
+﻿@using Hotels.Utilities
+@{
+    ViewData["Title"] = "Nueva Reserva";
+}
+@model ReserveViewModel;
+
+<script type="text/javascript">
+
+    window.addEventListener('load', function () {
+
+        $('form').submit(function (event) {
+            event.preventDefault();
+
+            var boton = $(event.target).find("button[type=submit]");
+            boton.prop("disabled", true);
+
+            var formData = $(this).serializeArray();
+            var jsonResultado = {};
+            $.each(formData, function (index, item) {
+                jsonResultado[item.name] = item.value;
+            });
+            
+            $.ajax({
+                url: '@Url.Action("Create", "Reserves")',
+                method: 'POST',
+                data: { "Item": jsonResultado },
+                success: function (response) {
+                    
+                    if (response.isSuccess) {
+                        if (response.data && response.data.uri) {
+                            window.location.href = response.data.uri;
+                        }
+                        AppShowAlert(TypeAlert.success, `${response.msg}`, 600);
+                    }
+                    else {
+                        AppShowAlert(TypeAlert.danger, `${response.msg}`, 600);
+                    }
+                },
+                error: function (error) {
+
+                    AppShowAlert(TypeAlert.danger, `Ocurrió un error ;(`, 600);
+                    console.error(error);
+                }, complete: function () {
+                    boton.prop("disabled", false);
+                }
+            });
+
+        })
+
+    });
+
+</script>
+
+<div class="row">
+    <div class="col">
+        <h1>@ViewData["Title"]</h1>
+    </div>
+    
+    <form action="">
+
+        <div class="row">
+            <div class="col">
+                <label for="Room">Habitacion:</label>
+                <input name="Room" data-validation="filtrar" class="form-control" type="text" disabled value="@Model.Room.Code" required>
+                <input name="RoomIdBD" data-validation="filtrar" class="form-control" type="number" hidden value="@Model.Room.IdBD" required>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col">
+                @{
+                    if (DateTime.TryParse(Model.DateOfAdmission, out var DateOfAdmission))
+                    {
+                        @HtmlUtils.GetDateInput("DateOfAdmission", "Fecha de ingreso", DateOfAdmission, true)
+                    }
+                    else
+                    {
+                        @HtmlUtils.GetDateInput("DateOfAdmission", "Fecha de ingreso", null)
+                    }
+                }
+            </div>
+            <div class="col">
+                @{
+                    if (DateTime.TryParse(Model.DateOfExit, out var DateOfExit))
+                    {
+                        @HtmlUtils.GetDateInput("DateOfExit", "Fecha de salida", DateOfExit, true)
+                    }
+                    else
+                    {
+                        @HtmlUtils.GetDateInput("DateOfExit", "Fecha de salida", null)
+                    }
+                }
+                
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="FullName">Nombre completo:</label>
+                <input name="FullName" data-validation="filtrar" class="form-control" type="text" required>
+            </div>
+            <div class="col">
+                <label for="DocumentType">Tipo documento:</label>
+                <input name="DocumentType" data-validation="filtrar" class="form-control" type="text" required>
+            </div>
+            <div class="col">
+                <label for="DocumentNumber"># documento:</label>
+                <input name="DocumentNumber" data-validation="filtrar" class="form-control" type="text" required>
+            </div>
+            <div class="col">
+                <label for="Gender">Genero:</label>
+                <input name="Gender" data-validation="filtrar" class="form-control" type="text">
+            </div>
+            <div class="col">
+                @HtmlUtils.GetDateInput("Birthdate", "Fecha de nacimiento", null)
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="Email">Correo:</label>
+                <input name="Email" data-validation="filtrar" class="form-control" type="text" required>
+            </div>
+            <div class="col">
+                <label for="Telephone">Telefono de contacto:</label>
+                <input name="Telephone" data-validation="filtrar" class="form-control" type="text">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="EmergencyFullName">Nombre completo emergencia:</label>
+                <input name="EmergencyFullName" data-validation="filtrar" class="form-control" type="text">
+            </div>
+            <div class="col">
+                <label for="EmergencyTelephone">Telefono de contacto emergencia:</label>
+                <input name="EmergencyTelephone" data-validation="filtrar" class="form-control" type="text">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="Observation">Observacion:</label>
+                <textarea name="Observation" class="form-control"></textarea>
+            </div>
+        </div>
+
+        <br />
+
+        <button type="submit" class="btn btn-success">Guardar</button>
+    </form>
+
+</div>

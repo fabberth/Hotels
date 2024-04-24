@@ -30,6 +30,7 @@ namespace Hotels.Domain
 
         public void ValidateRoom()
         {
+            this.Observation = this.Observation ?? string.Empty;
             if (string.IsNullOrEmpty(this.Name))
             {
                 throw new Exception($"Nombre no valido");

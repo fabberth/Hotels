@@ -17,9 +17,10 @@ namespace Hotels.Models
         public void GetActionsBanner(IIdentity Identity)
         {
             List<AppAction> actions = new List<AppAction> {
-                        new AppAction(1, "Reservar", new AppUriAction("Reservar", "Room")),
+                        new AppAction(1, "Reservar", new AppUriAction("Booking", "Reserves")),
                         new AppAction(2, "Hoteles", new AppUriAction("List", "Hotels")),
-                        new AppAction(3, "Habitaciones", new AppUriAction("List", "Rooms"))
+                        new AppAction(3, "Habitaciones", new AppUriAction("List", "Rooms")),
+                        new AppAction(4, "Reservas", new AppUriAction("List", "Reserves"))
             };
 
             if (this.AppActionsBanner == null)

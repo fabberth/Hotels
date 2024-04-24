@@ -35,6 +35,38 @@ namespace Hotels.Utilities
             return new HtmlString(text.ToString());
         }
 
+        public static IHtmlContent GetDateTimeInput(string id, string display, DateTime? value, bool onlyShow = false)
+        {
+            StringBuilder text = new StringBuilder();
+            string valueHtml = value == null ? string.Empty : value.Value.ToString("yyyy-MM-ddTHH:mm");
+            string disabledHtml = onlyShow ? "disabled" : string.Empty;
+            string inputHiddenHtml = onlyShow ? $"<input name=\"{id}\"  type=\"text\" hidden value=\"{valueHtml}\">" : string.Empty;
+            id = onlyShow ? "View"+id : id;
+            text.Append($@"
+                <label for=""{id}"">{display}:</label>
+                <input name=""{id}"" data-validation=""filtrar"" class=""form-control"" type=""datetime-local"" {disabledHtml} value=""{valueHtml}"">
+                {inputHiddenHtml}
+            ");
+
+            return new HtmlString(text.ToString());
+        }
+
+        public static IHtmlContent GetDateInput(string id, string display, DateTime? value, bool onlyShow = false)
+        {
+            StringBuilder text = new StringBuilder();
+            string valueHtml = value == null ? string.Empty : value.Value.ToString("yyyy-MM-dd");
+            string hiddenHtml = onlyShow ? "disabled" : string.Empty;
+            string inputHiddenHtml = onlyShow ? $"<input name=\"{id}\" hidden type=\"text\" value=\"{valueHtml}\">" : string.Empty;
+            id = onlyShow ? "View" + id : id;
+            text.Append($@"
+                <label for=""{id}"">{display}:</label>
+                <input name=""{id}"" data-validation=""filtrar"" class=""form-control"" type=""date"" {hiddenHtml} value=""{valueHtml}"">
+                {inputHiddenHtml}
+            ");
+
+            return new HtmlString(text.ToString());
+        }
+
         public static IHtmlContent GetInputConfiguration(string module, string name, string value, string type)
         {
             StringBuilder text = new StringBuilder();

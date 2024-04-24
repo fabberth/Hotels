@@ -1,0 +1,68 @@
+﻿@{
+    ViewData["Title"] = "Reservar";
+}
+@model ReserveViewModel;
+
+<div class="col">
+    <h1>Habitaciones</h1>
+</div>
+
+<form action="" id="dataFilters">
+
+    <div class="row">
+        <div class="col">
+            <label for="DateOfAdmission">Fecha ingreso:</label>
+            <input name="DateOfAdmission" data-validation="filtrar" class="form-control" type="date" value="@Model.DateOfAdmission">
+        </div>
+        <div class="col">
+            <label for="DateOfExit">Fecha salida:</label>
+            <input name="DateOfExit" data-validation="filtrar" class="form-control" type="date" value="@Model.DateOfExit">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label for="NumberOfPeople"># Personas:</label>
+            <input name="NumberOfPeople" data-validation="filtrar" class="form-control" type="number" value="@Model.NumberOfPeople">
+        </div>
+        <div class="col">
+            <label for="Location">Ubicacion:</label>
+            <input name="Location" data-validation="filtrar" class="form-control" type="text" value="@Model.Location">
+        </div>
+    </div>
+
+    <br />
+
+    <button type="submit" class="btn btn-success" style="float: right;">Buscar</button>
+</form>
+
+<br />
+<br />
+<br />
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @{
+        if (Model.Rooms != null)
+        {
+            foreach (var Room in Model.Rooms)
+            {
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/102066025.jpg?k=8a2a59dd60a3decf645564a3e01bfc8ba8d961f2353648dd17ae4d975cd102e8&o=&hp=1" class="card-img-top" alt="@Room.Name">
+                        <div class="card-body">
+                            <h5 class="card-title">@Room.Name</h5>
+                            <p class="card-text">@Room.Location</p>
+                            <p class="card-text">@Room.Observation</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">Capacidad Personas : @Room.NumberOfPeople</small>
+                            <a style="float: right;" class="btn btn-success" href="@Url.Action("New", "Reserves", new {RoomIdBD = Room.IdBD, DateOfAdmission = Model.DateOfAdmission, DateOfExit = Model.DateOfExit})">Reservar</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        
+    }
+    
+</div>
+

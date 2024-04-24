@@ -12,6 +12,7 @@ namespace Hotels.AppDbContexts
 
         public DbSet<AppUser> Users { get; set; }
         public DbSet<Configuration> Configurations { get; set; }
+        public DbSet<Reserve> Reserves { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Hotel> Hotels { get; set; }
 
@@ -27,7 +28,7 @@ namespace Hotels.AppDbContexts
                 .WithMany(h => h.Rooms)
                 .HasForeignKey(x=> x.IdHotel);
 
-            
+            modelBuilder.Entity<Reserve>().ToTable("Reserves");
 
         }
     }
