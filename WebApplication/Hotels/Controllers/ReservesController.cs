@@ -16,10 +16,13 @@ namespace Hotels.Controllers
     {
         private readonly IHotelRepository hotelRepository;
         private readonly IRoomRepository roomRepository;
-        public ReservesController(IHotelRepository _hotelRepository, IRoomRepository _roomRepository)
+        private readonly AppDbContext dbContext;
+        public ReservesController(AppDbContext _dbContext, IHotelRepository _hotelRepository, IRoomRepository _roomRepository)
         {
+            dbContext = _dbContext;
             hotelRepository = _hotelRepository;
             roomRepository = _roomRepository;
+
         }
 
         public IActionResult List()
@@ -205,12 +208,12 @@ namespace Hotels.Controllers
                 {
                     return Ok(new DataResponse(false, $"Habitacion {room.Code} deshabilitada"));
                 }
-
-                if(model.Item.DateOfAdmission < DateTime.Now)
+                var dateNow = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 00, 00, 00);
+                if (model.Item.DateOfAdmission < dateNow)
                 {
                     return Ok(new DataResponse(false, $"Fecha de ingreso no valida {model.Item.DateOfAdmission}"));
                 }
-
+                model.Item.DateOfExit = model.Item.DateOfExit.AddHours(23);
                 if (model.Item.DateOfAdmission > model.Item.DateOfExit)
                 {
                     return Ok(new DataResponse(false, $"Fecha de ingreso no valida {model.Item.DateOfAdmission}"));
@@ -242,15 +245,26 @@ namespace Hotels.Controllers
 
         private void Notify(Reserve reserve)
         {
-            string smtpHost = "smtp-mail.outlook.com";
-            int smtpPort = 587;
-            string emailFrom = "f.torres.adapting@hotmail.com";
-            string password = "1338*846_ed133f!5D18__6d";
+            var SmtpCorreo = dbContext.Configurations.FirstOrDefault(x => x.Name == "SmtpCorreo");
+            if (SmtpCorreo == null || string.IsNullOrEmpty(SmtpCorreo.Value))
+            {
+                Console.WriteLine("Credenciales de correo NO configurada");
+                return;
+            }
 
-            // Destinatario del correo
+            var SmtpPass = dbContext.Configurations.FirstOrDefault(x => x.Name == "SmtpPass");
+            if (SmtpPass == null || string.IsNullOrEmpty(SmtpPass.Value))
+            {
+                Console.WriteLine("Credenciales de contrasena NO configurada");
+                return;
+            }
+
+            string smtpHost = "smtp.hostinger.com";
+            int smtpPort = 587;
+            string emailFrom = SmtpCorreo.Value;
+            string password = SmtpPass.Value;
             string emailTo = reserve.Email;
 
-            // Crear el mensaje
             MailMessage mensaje = new MailMessage(emailFrom, emailTo);
             mensaje.Subject = "Reservación Exitosa!";
             mensaje.Body = $@"Estimado {reserve.FullName},
@@ -264,13 +278,11 @@ Si tienes alguna pregunta o necesitas asistencia adicional, no dudes en contacta
 
 ¡Esperamos con ansias darte la bienvenida pronto!
 
-Atentamente,
-[Nombre del Hotel/Organización]";
+Atentamente, Hotels";
 
-            // Configurar el cliente SMTP
             SmtpClient clienteSmtp = new SmtpClient(smtpHost, smtpPort);
             clienteSmtp.Credentials = new NetworkCredential(emailFrom, password);
-            clienteSmtp.EnableSsl = true; // Habilitar SSL si es necesario
+            clienteSmtp.EnableSsl = true;
 
             try
             {
@@ -278,6 +290,7 @@ Atentamente,
             }
             catch (Exception ex)
             {
+                Console.WriteLine("Error al enviar el correo electrónico: " + ex.Message);
             }
         }
     }
