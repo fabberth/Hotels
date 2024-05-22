@@ -27,6 +27,11 @@ namespace Hotels.Domain
                 throw new Exception($"Codigo no valido");
             }
 
+            if (int.TryParse(this.Code, out int num))
+            {
+                throw new Exception($"Codigo no puede ser solo numeros");
+            }
+
         }
 
     }
